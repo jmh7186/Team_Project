@@ -5,9 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>배달 정보</title>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<%@include file="/WEB-INF/header.jsp" %>
+	<h1>배달 정보</h1>
 	<form action="/deliverymgr/update" method="POST">
 	<table border="1" style="width: 800px; height: 300px; margin: auto;">
 		<tr>
@@ -20,8 +23,8 @@
 				<input id="due_date" type="date" name="due_date" hidden="true" value="${vo.due_date}">
 			</td>
 			<th>배달 상태</th>
-			<td colspan="3"><span id="olddata2">${vo.delivery_status}</span>
-				<select id="delivery_status" name="delivery_status" hidden="true">
+			<td colspan="3"><span id="olddata2">${vo.d_status}</span>
+				<select id="d_status" name="d_status" hidden="true">
     				<option value="">배달 상태</option>
     				<option value="0">미완료</option>
     				<option value="1">완료</option>
@@ -69,7 +72,7 @@
 <script>
 	function update() {
 		document.getElementById('due_date').hidden=false;
-		document.getElementById('delivery_status').hidden=false;
+		document.getElementById('d_status').hidden=false;
 		document.getElementById('customer_status').hidden=false;
 		document.getElementById('backbtn').hidden=true;
 		document.getElementById('updatebtn').hidden=true;
