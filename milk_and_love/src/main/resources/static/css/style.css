@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+#header {
+	background: #1398FF;
+}
+
+#footer {
+	height: 100px;
+	background: #333;
+}

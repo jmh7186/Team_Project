@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.milk_and_love.mapper.DeliveryManMapper">
+	<!-- 모든 배달원 -->
+	<select id="selectAll">
+			SELECT *
+			FROM (
+			        SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id) as rn
+    				FROM delivery_man
+		         )
+			WHERE rn BETWEEN #{start} and #{end}
+			
+	</select>
+	
+	<!-- 신규 배달원 정보 조회 -->
+	<select id="selectOne">
+		SELECT *
+		FROM delivery_man
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 신규 배달원 등록 -->
+	<insert id="insert">
+	    INSERT INTO delivery_man(id,pw,name,tel,post_code,road_address,detail_address,area1,area2,area3)
+	    VALUES('D'||To_Char(SYSDATE,'YYYYMM')||LPAD(delivery_man_seq.nextval,3,0),
+	           #{pw},
+	           #{name},
+	           #{tel},
+	           #{post_code},
+	           #{road_address},
+	           #{detail_address,jdbcType=VARCHAR},
+	           #{area1},
+	           #{area2},
+	           #{area3,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 배달원 정보 수정 -->
+	<update id="update">
+		UPDATE delivery_man
+		<set>
+		    <if test="status_select != null">status=#{status_select},</if>
+		    <if test="name_input != null">name=#{name_input},</if>
+		    <if test="tel_input != null">tel=#{tel_input},</if>
+		    <if test="post_code != null and road_address !=null">post_code=#{post_code},road_address=#{road_address},</if>
+		    <if test="detail_address != null">detail_address=#{detail_address},</if>
+		    <if test="area1 != null and area2 != null">area1=#{area1},area2=#{area2},</if>
+		    <if test="area3 != null">area3=#{area3},</if>
+		    <if test="pw != null">pw=#{pw}</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<!-- 배달원 상태 변경 -->
+	<update id="updateStatus">
+		UPDATE delivery_man
+		SET status=#{status}
+		WHERE id=#{id}
+	</update>
+	
+	<!-- 배달원 검색 -->
+	<select id="search">
+		SELECT *
+		FROM (
+			SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id) as rn
+			FROM delivery_man
+			<where>
+				1=1
+				<if test="id != null">AND id=#{id}</if>
+				<if test="name !=null">AND name=#{name}</if>
+				<if test="tel_input != null">AND tel=#{tel}</if>
+				<if test="start_day != null and end_day != null">
+				<![CDATA[AND join_date >= TO_DATE(REPLACE(#{start_day}, '-', '/'), 'YYYY/MM/DD') AND join_date < TO_DATE(REPLACE(#{end_day}, '-', '/'), 'YYYY/MM/DD') + INTERVAL '1' DAY]]>
+				</if>
+				<if test="area1 != null">AND area1=#{area1}</if>
+				<if test="area2 != null">AND area2=#{area2}</if>
+				<if test="area3 != null">AND area3=#{area3}</if>
+				<if test="status != null">AND status=#{status}</if>
+			</where>
+		)
+		WHERE rn BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- 검색 조건에 맞는 데이터 개수 -->
+	<select id="searchTotalPage">
+		SELECT COUNT(*)
+		FROM delivery_man
+		<where>
+			1=1
+			<if test="id != null">AND id=#{id}</if>
+			<if test="name !=null">AND name=#{name}</if>
+			<if test="tel_input != null">AND tel=#{tel}</if>
+			<if test="start_day != null and end_day != null">
+			<![CDATA[AND join_date >= TO_DATE(REPLACE(#{start_day}, '-', '/'), 'YYYY/MM/DD') AND join_date < TO_DATE(REPLACE(#{end_day}, '-', '/'), 'YYYY/MM/DD') + INTERVAL '1' DAY]]>
+			</if>
+			<if test="area1 != null">AND area1=#{area1}</if>
+			<if test="area2 != null">AND area2=#{area2}</if>
+			<if test="area3 != null">AND area3=#{area3}</if>
+			<if test="status != null">AND status=#{status}</if>
+		</where>
+	</select>
+	
+	<!-- 최초 페이지 수 -->
+	<select id="totalPage">
+		SELECT count(*)
+		FROM delivery_man
+	</select>
+	
+	
+	<!-- area1 목록 -->
+	<select id="selectArea1List">
+		SELECT * FROM address_area
+		WHERE code LIKE '%' || '00000000'
+	</select>
+	
+	<!-- area2 목록 -->
+	<select id="selectArea2List">
+		SELECT * FROM address_area
+		WHERE code LIKE #{arae1Code} || '%' || '000000' AND code NOT LIKE #{area1Code} || '00000000'
+	</select>
+	
+	<!-- area3 목록 -->
+	<select id="selectArea3List">
+		SELECT * FROM address_area
+		WHERE code LIKE #{arae2Code} || '%' AND code NOT LIKE #{area2Code} || '000000'
+	</select>
+</mapper>

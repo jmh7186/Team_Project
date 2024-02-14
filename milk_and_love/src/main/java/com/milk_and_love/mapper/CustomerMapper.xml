@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.milk_and_love.mapper.CustomerMapper">
+	<!-- 리스트 출력 -->
+	<select id="selectList">
+		SELECT * FROM(
+		  SELECT id, join_date, status, name, tel, delivery_man_id, leave_date, ROWNUM r_num FROM(
+		    SELECT *
+		    FROM customer
+		    <where>
+		    	AND join_date <![CDATA[>=]]> #{start_date} AND join_date <![CDATA[<]]> TO_DATE(#{end_date}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+		    	
+		    	<if test="id != null">
+			    	AND id = #{id}
+			    </if>
+			    <if test="name != null">
+			    	AND name = #{name}
+			    </if>
+			    <if test="tel != null">
+			    	AND tel = #{tel}
+			    </if>
+			    <if test="status != -1">
+			    	AND status = #{status}
+			    </if>
+			    <if test="delivery_man_id != null">
+			    	AND delivery_man_id = #{delivery_man_id}
+			    </if>
+			    <if test="address != null">
+			    	AND road_address LIKE '%' || #{address} || '%' OR detail_address LIKE '%' || #{address} || '%'
+			    </if>
+		    </where>
+		    ORDER BY id DESC
+		  )
+		)
+		WHERE r_num <![CDATA[>=]]> #{start_row} AND r_num <![CDATA[<=]]> #{end_row}
+	</select>
+	
+	<!-- 조건에 맞는 데이터 개수 -->
+	<select id="selectTotalCount">
+		SELECT COUNT(*)
+		FROM customer
+		<where>
+	    	AND join_date <![CDATA[>=]]> #{start_date} AND join_date <![CDATA[<]]> TO_DATE(#{end_date}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+	    	
+	    	<if test="id != null">
+		    	AND id = #{id}
+		    </if>
+		    <if test="name != null">
+		    	AND name = #{name}
+		    </if>
+		    <if test="tel != null">
+		    	AND tel = #{tel}
+		    </if>
+		    <if test="status != -1">
+		    	AND status = #{status}
+		    </if>
+		    <if test="delivery_man_id != null">
+		    	AND delivery_man_id = #{delivery_man_id}
+		    </if>
+		    <if test="address != null">
+		    	AND road_address LIKE '%' || #{address} || '%' OR detail_address LIKE '%' || #{address} || '%'
+		    </if>
+	    </where>
+	</select>
+	
+	<!-- 해지 처리 -->
+	<update id="updateStatusToLeave">
+		UPDATE customer
+		SET status=1, leave_date=SYSDATE
+		WHERE id IN(
+			<foreach collection="array" item="id" index="index" separator=",">
+				'${id}'
+			</foreach>
+		)
+	</update>
+
+	<!-- 주소지에 유효한 배달원 목록 출력 -->
+	<select id="selectDeliveryManList">
+		SELECT id, RTRIM(area || ' ' || area3) AS area FROM(
+		    SELECT id, area1 || ' ' || area2 AS area, area3
+		    FROM delivery_man
+		)
+		WHERE area = #{area} AND (area3 = #{area3} OR area3 IS NULL)
+	</select>
+	
+	<!-- 고객 등록 -->
+	<insert id="insert">
+		INSERT INTO customer(id, name, tel, post_code, road_address, detail_address, area3, delivery_man_id)
+		VALUES('C' || TO_CHAR(SYSDATE, 'YYYYMM') || LPAD(seq_customer_id.NEXTVAL, 3, 0), #{name}, #{tel}, #{post_code}, #{road_address}, #{detail_address}, #{area3}, #{delivery_man_id})
+	</insert>
+	
+	<!-- 고개 정보 조회 -->
+	<select id="select">
+		SELECT * FROM customer
+		WHERE id=#{id}
+	</select>
+	
+	<!-- 고객 정보 업데이트 -->
+	<update id="update">
+		UPDATE customer
+		SET status=#{status}, name=#{name}, tel=#{tel}, post_code=#{post_code}, road_address=#{road_address}, detail_address=#{detail_address}, area3=#{area3}, delivery_man_id=#{delivery_man_id}
+		<if test="status == 1">
+		, leave_date=SYSDATE
+		</if>
+		WHERE id=#{id}
+	</update>
+</mapper>
