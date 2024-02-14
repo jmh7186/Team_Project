@@ -3,26 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>관리자 페이지 로그인</title>
-	
-	<link rel="stylesheet" href="/css/reset.css">
+<link href="/css/login.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<title>관리자 페이지 로그인</title>
 </head>
 <body>
-	<div id="wrap">
-		<!-- 컨테이너 -->
-		<div id="container">
-			<!-- 로고 -->
-			<h1 class="logo"><img src="/img/logo.png" alt="로고"></h1>
-			<!-- // 로고 -->
-			
-			<!-- 로그인 폼 -->
-			<div class="login_wrap">
-				
-			</div>
-			<!-- 로그인 폼 -->
-		</div>
-		<!-- // 컨테이너 -->
-	</div>
+	<form id="loginform" action="/loginproc" method="POST">
+		<img src="/logo.png"><br>
+		<ul>
+			<li><input id="id" name="id" type="text"></li>
+			<li><input id="pw" name="pw" type="password"></li>
+			<li><button>로그인</button></li>
+			<li id="checkbox"><input id="rememberid" name="rememberid" type="checkbox"><span>아이디 저장</span></li>
+		</ul>
+	</form>
 </body>
 </html>
