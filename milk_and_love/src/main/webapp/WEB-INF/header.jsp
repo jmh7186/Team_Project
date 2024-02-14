@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!-- header -->
 
 
@@ -11,8 +12,8 @@
 	<!-- GNB -->
 	<div class="gnb_wrap">
 		<ul>
-			<li>OOO님</li>
-			<li>로그아웃</li>
+			<li>${sessionScope.id}님</li>
+			<li><a href="/logout">로그아웃</a></li>
 		</ul>
 	</div>
 	<!-- // GNB -->
@@ -30,7 +31,7 @@
 			<li>
 				배달 관리
 				<ul>
-					<li>배달 조회</li>
+					<li><a href="/deliverymgr">배달 조회</a></li>
 				</ul>
 			</li>
 			<li>
@@ -40,7 +41,7 @@
 					<li><a href="/customer/join">신규 고객 등록</a></li>
 				</ul>
 			</li>
-			<li>1:1 문의</li>
+			<li><a href="/QnA">1:1 문의</a></li>
 			<li>
 				공지사항
 				<ul>

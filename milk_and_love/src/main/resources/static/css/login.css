@@ -1,0 +1,31 @@
+@charset "UTF-8";
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#loginform {
+	text-align: center;
+	margin-top: 250px;
+}
+
+#loginform > ul{
+	list-style: none;
+	display: inline-block;
+}
+
+#loginform > ul > li > input[type="text"], input[type="password"] {
+	width: 200px;
+}
+
+#loginform > ul > li > button {
+	width: 204px;
+}
+
+#loginform > ul > #checkbox {
+	text-align: left;
+}
+
+#loginform > img {
+	margin-bottom: 30px;
+}

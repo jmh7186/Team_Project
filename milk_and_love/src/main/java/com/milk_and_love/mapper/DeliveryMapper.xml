@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.milk_and_love.mapper.DeliveryMapper">
+	<insert id="insert">
+		insert into delivery(no,due_date,customer_id,delivery_man_id,status,customer_status) values (#{no},#{due_date},#{customer_id},#{delivery_man},#{d_status},#{customer_status, jdbcType=VARCHAR});
+	</insert>
+	<select id="selectAll">select no,due_date,customer_id,delivery_man_id,status d_status,customer_status from delivery</select>
+	<select id="selectByNo">
+		select c.name customer_name, c.area3 address, c.tel customer_tel, d.no, d.due_date, d.customer_id, d.delivery_man_id, case d.status when 0 then '미완료' when 1 then '완료' end d_status, case d.customer_status when 0 then '양호' when 1 then '주의' when 2 then '위험' end customer_status from customer c, delivery d where c.id=d.customer_id and d.no=#{no}
+	</select>
+	<update id="update">update delivery set due_date=#{due_date}, customer_id=#{customer_id, jdbcType=VARCHAR}, delivery_man_id=#{delivery_man_id, jdbcType=VARCHAR}, status=#{d_status, jdbcType=VARCHAR}, customer_status=#{customer_status, jdbcType=VARCHAR} where no=#{no}</update>
+	<delete id="delete">delete delivery where no=#{no}</delete>
+	<select id="selectByPage">
+	<![CDATA[
+		select * from (select rownum r, c.name customer_name, c.area3 address, c.tel customer_tel, d.no, d.due_date, d.customer_id, d.delivery_man_id,
+		case d.status when 0 then '미완료' when 1 then '완료' end d_status, case d.customer_status when 0 then '양호' when 1 then '주의' when 2 then '위험' end customer_status
+		from customer c, delivery d) where r>(#{page}-1)*50 and r<=(#{page}*50)
+	]]>
+	</select>
+	<select id="selectCount" resultType="int">
+		<![CDATA[
+		select count(*) from (select c.name customer_name, c.area3 address, c.tel customer_tel, d.no, d.due_date, d.customer_id, d.delivery_man_id,
+		case d.status when 0 then '미완료' when 1 then '완료' end d_status, case d.customer_status when 0 then '양호' when 1 then '주의' when 2 then '위험' end customer_status
+		from customer c, delivery d where c.id=d.customer_id and d.no like '%'||#{vo.no, jdbcType=VARCHAR}||'%' and d.customer_id like '%'||#{vo.customer_id, jdbcType=VARCHAR}||'%'
+		and c.name like '%'||#{vo.customer_name, jdbcType=VARCHAR}||'%' and c.tel like '%'||#{vo.customer_tel, jdbcType=VARCHAR}||'%' and d.delivery_man_id like '%'||#{vo.delivery_man_id, jdbcType=VARCHAR}||'%'
+		and c.area3 like '%'||#{vo.address, jdbcType=VARCHAR}||'%' and d.status like #{vo.d_status, jdbcType=VARCHAR}||'%' and d.customer_status like '%'||#{vo.customer_status, jdbcType=VARCHAR}||'%' and d.due_date >= to_date(#{startdate},'yyyy-MM-dd')
+		and d.due_date <= to_date(#{enddate}||' 23:59:59','yyyy-MM-dd hh24:mi:ss'))
+		]]>
+	</select>
+	<select id="search">
+	<![CDATA[
+		select * from
+		(select rownum r, c.name customer_name, c.area3 address, c.tel customer_tel, d.no, d.due_date, d.customer_id, d.delivery_man_id,
+		case d.status when 0 then '미완료' when 1 then '완료' end d_status,
+		case d.customer_status when 0 then '양호' when 1 then '주의' when 2 then '위험' end
+		customer_status from customer c, delivery d
+		where c.id=d.customer_id and d.no like '%'||#{vo.no, jdbcType=VARCHAR}||'%' and d.customer_id like '%'||#{vo.customer_id, jdbcType=VARCHAR}||'%'
+		and c.name like '%'||#{vo.customer_name, jdbcType=VARCHAR}||'%' and c.tel like '%'||#{vo.customer_tel, jdbcType=VARCHAR}||'%' and d.delivery_man_id like '%'||#{vo.delivery_man_id, jdbcType=VARCHAR}||'%'
+		and c.area3 like '%'||#{vo.address, jdbcType=VARCHAR}||'%' and d.status like #{vo.d_status, jdbcType=VARCHAR}||'%' and d.customer_status like '%'||#{vo.customer_status, jdbcType=VARCHAR}||'%'
+		and d.due_date >= to_date(#{startdate},'yyyy-MM-dd') and d.due_date <= to_date(#{enddate}||' 23:59:59','yyyy-MM-dd hh24:mi:ss'))
+		where r>(#{page}-1)*50 and r<=(#{page}*50)
+	]]>
+	</select>
+</mapper>
