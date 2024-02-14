@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>1:1문의</title>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
