@@ -211,7 +211,7 @@ public class DeliveryManController {
 			
 			System.out.println(start);
 			System.out.println(end);
-			
+			keyWords.remove("page");
 			keyWords.put("start", start);
 			keyWords.put("end", end);
 			

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.milk_and_love.mapper.BoardQnAMapper">
+	<!-- 1대1 문의 페이지 게시글 -->
+	<select id="selectAll">
+		SELECT *
+		FROM (
+		        SELECT no,title,q_content,q_author,q_date,status,is_deleted, ROWNUM as rnum
+		        FROM (
+		                SELECT *
+		                FROM "BOARD_QNA"
+		                ORDER BY no desc
+		             )
+		     )
+		WHERE rnum BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- 1대1문의 하나의 정보 조회 -->
+	<select id="selectOne">
+		SELECT *
+		FROM board_qna
+		WHERE no = #{no}
+	</select>
+	
+	
+	<!-- 1대1 문의 페이지 전체 게시글 페이지 개수 -->
+	<select id="totalPage">
+		SELECT count(*)
+		FROM board_qna
+	</select>
+	
+	<!-- 1대1 문의 페이지 검색 게시글 -->
+	<select id="search">
+		SELECT *
+		FROM (
+		        SELECT no, title, q_content, q_author, q_date, status, is_deleted, ROWNUM as rnum
+		        FROM (
+		                SELECT *
+		                FROM "BOARD_QNA"
+		                <where>
+			                1=1
+			                <if test="title != null"> AND title =#{title}</if>
+			                <if test="q_author != null">AND q_author =#{q_author}</if>
+			                <if test="status != null">AND status =#{status}</if>
+		                </where>
+		                ORDER BY no desc
+		             )
+		     )
+		WHERE rnum BETWEEN #{start} and #{end}
+		
+	</select>
+	
+	
+	
+	<!-- 검색한 페이지의 총합 페이지 개수 -->
+	<select id="searchTotalPage">
+		SELECT COUNT(*)
+		FROM (
+		        SELECT no, title, q_content, q_author, q_date, status, is_deleted, ROWNUM as rnum
+		        FROM (
+		                SELECT *
+		                FROM "BOARD_QNA"
+		                <where>
+			                1=1
+			                <if test="title != null"> AND title =#{title}</if>
+			                <if test="q_author != null">AND q_author =#{q_author}</if>
+			                <if test="status != null">AND status =#{status}</if>
+		                </where>
+		                ORDER BY no
+		             )
+		     )	
+	</select>
+	
+	<update id="deleteQnA">
+		UPDATE board_qna
+		SET is_deleted = 1
+		WHERE no = #{no}
+	</update>
+	
+	<update id="updateAnswer">
+		UPDATE board_qna
+		SET status =  1, a_author = #{a_author}, a_date = SYSDATE, a_content = #{a_content}
+		WHERE no = #{no}
+	</update>
+	
+</mapper>

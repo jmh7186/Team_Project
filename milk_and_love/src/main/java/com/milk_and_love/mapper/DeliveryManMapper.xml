@@ -12,7 +12,7 @@
 			
 	</select>
 	
-	<!-- 신규 배달원 정보 조회 -->
+	<!-- 배달원 하나의 정보 조회 -->
 	<select id="selectOne">
 		SELECT *
 		FROM delivery_man

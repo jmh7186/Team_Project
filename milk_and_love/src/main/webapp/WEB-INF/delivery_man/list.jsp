@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="/css/delivery_man.css">
 </head>
 <body>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		// 테이블에 페이지를 추가하는 펑션
 		function showPage(page) {
@@ -221,9 +221,9 @@
 		    var page = $("#page_input").val();
 			
 		    // 최대 페이지 변수
-		    var totalPages = $('#totalPages').text().trim();;
+		    var totalPages = $('#totalPages').text().trim();
 		    
-		    //
+		    // 검색할 키워드들을 담은 변수
 		    var searchParams = {};
 		    
 			// 셀렉터에 옵션들 추가
@@ -283,6 +283,8 @@
 		    
 		    // 조회 버튼 펑션
 		    $('#search_btn').click(function(){
+		    	// 객체 초기화
+		    	searchParams = {};
 		    	
 		        $('#search_tbl input, #search_tbl select').each(function() {
 		            var id = $(this).attr('id');
@@ -591,7 +593,7 @@
 		<section id="page_section">
 			<button id="first_page_btn">&lt;&lt;</button>
 			<button id="previous_page_btn">&lt;</button>
-			<div id="pgae_div">
+			<div id="page_div">
 				<input type="number" id="page_input" value="${page}" min="1" max="${totalPages}">
 				<p>/</p>
 				<p id="totalPages">
