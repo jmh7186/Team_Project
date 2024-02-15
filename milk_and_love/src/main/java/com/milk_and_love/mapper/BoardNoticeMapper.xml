@@ -75,9 +75,16 @@
 	
 	<!-- 공지사항 등록 -->
 	<insert id="insert">
-		INSERT INTO board_notice(no, title, content, author)
-		VALUES(seq_board_notice_no.NEXTVAL, #{title}, #{content}, #{author})
+		INSERT INTO board_notice(no, title, content, author, is_hidden)
+		VALUES(seq_board_notice_no.NEXTVAL, #{title}, #{content}, #{author}, #{is_hidden})
 	</insert>
+
+	<!-- 조회수 증가 -->
+	<update id='updateViews'>
+		UPDATE board_notice
+		SET views=views+1
+		WHERE no=#{no} 
+	</update>
 	
 	<!-- 공지사항 정보 조회 -->
 	<select id="select">
@@ -88,7 +95,7 @@
 	<!-- 공지사항 수정 -->
 	<update id="update">
 		UPDATE board_notice
-		SET title=#{title}, content=#{content}
+		SET title=#{title}, content=#{content}, is_hidden=#{is_hidden}
 		WHERE no=#{no}
 	</update>
 </mapper>
