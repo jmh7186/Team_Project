@@ -33,6 +33,13 @@
 								<th>내용</th>
 								<td><textarea name="content"></textarea></td>
 							</tr>
+							<tr>
+								<th>숨김 설정</th>
+								<td>
+									<input type="radio" name="is_hidden" value="0" checked>표시
+									<input type="radio" name="is_hidden" value="1">숨김
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					
