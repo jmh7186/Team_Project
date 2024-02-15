@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="module" src="/js/board_QnA/list.js"></script>
+<script type="module" src="/js/board_QnA/list.js"></script>
 </head>
 <body>
 	<%@include file="/WEB-INF/header.jsp" %>

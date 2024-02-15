@@ -7,11 +7,12 @@
 <meta charset="UTF-8">
 <title>QnA상세</title>
 
-	<link rel="stylesheet" href="/css/reset.css">
-	<link rel="stylesheet" href="/css/style.css">
-	<link rel="stylesheet" href="/css/delivery_man.css">
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/delivery_man.css">
 
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="module" src="/js/board_QnA/view.js"></script>
 </head>
 <body>	
 	<%@include file="/WEB-INF/header.jsp" %>
