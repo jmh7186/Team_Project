@@ -77,7 +77,7 @@
 										</td>
 										<td>${status.count}</td>
 										<td>
-											<span class="pin <c:if test='${item.is_pinned eq 1}'>pinned</c:if>">
+											<span class="pin <c:if test='${item.is_pinned eq 1}'>pinned</c:if>" data-no="${item.no}">
 												📌
 											</span>
 										</td>
@@ -98,15 +98,6 @@
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${item.is_pinned eq 0}">
-													<input type="button" id="single_pin" value="고정" data-no="${item.no}">
-												</c:when>
-												<c:otherwise>
-													<input type="button" id="single_unpin" value="고정 해제" data-no="${item.no}">
-												</c:otherwise>
-											</c:choose>
-											
-											<c:choose>
 												<c:when test="${item.is_hidden eq 0}">
 													<input type="button" id="single_hide" value="숨김" data-no="${item.no}">
 												</c:when>
@@ -124,8 +115,6 @@
 
 					<!-- 버튼 -->
 					<div class="btns">
-						<input type="button" id="select_pin" value="선택 고정">
-						<input type="button" id="select_unpin" value="선택 고정 해제">
 						<input type="button" id="select_hide" value="선택 숨김">
 						<input type="button" id="select_display" value="선택 숨김 해제">
 					</div>
@@ -193,6 +182,31 @@
 			}
 			
 		});
+
+		// 고정, 고정해제
+		$(document).on("click", "span.pin", function() {
+			let type;
+			
+			// 고정 상태라면 고정 해제
+			if($(this).hasClass("pinned")) {
+				type = "unpin";
+				
+			} else { // 고정 해제 상태라면 고정
+				type = "pin";
+			}
+			
+			let sendData = "type=" + type + "&no=" + $(this).data("no");
+			let result = updateStatusProcess(sendData);	// 상태 변경 처리 결과
+			
+			// 고정 해제 처리 성공 시
+			if(type === 'unpin' && result != 0) { 
+				$(this).removeClass("pinned");
+			
+			} else if(type === 'pin' && result != 0) { // 고정 처리 성공 시
+				$(this).addClass("pinned");
+			}
+			
+		});
 		
 		// 선택 작업 클릭
 		$("div.btns > input[type=button]").on("click", function() {
@@ -228,9 +242,11 @@
 					if(data != 0) {
 						alert("요청이 완료되었습니다.");
 						loadList(currentPageNum);
+						return 1;
 						
 					} else { // 요청에 실패한 경우
 						alert("요청에 실패하였습니다.");
+						return 0;
 					}
 				}
 			});
@@ -309,7 +325,7 @@
 						
 						if(item.is_pinned == 1) content += "pinned";
 						
-						content += "'>📌</span></td>"
+						content += "' data-no='" + item.no + "'>📌</span></td>"
 									+ "<td>" + item.no  + "</td>"
 									+ "<td><a href='/notice/view?no=" + item.no + "'>" + item.title  + "</td>"
 									+ "<td>" + item.post_date  + "</td>"
@@ -322,13 +338,7 @@
 						
 						content += "</td>"
 									+ "<td><input type='button' ";
-						
-						if(item.is_pinned == 0) content += "id='single_pin' value='고정' ";
-						else content += "id='single_unpin' value='고정 해제' ";
-						
-						content += "data-no=" + item.no + ">"
-									+ "<input type='button' ";
-						
+
 						if(item.is_hidden == 0) content += "id='single_hide' value='숨김' ";
 						else content += "id='single_display' value='숨김 해제' ";
 						
