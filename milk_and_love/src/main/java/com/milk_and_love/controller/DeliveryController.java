@@ -30,7 +30,7 @@ public class DeliveryController {
 	@GetMapping("/deliverymgr")
 	public ModelAndView deliveryMgr(ModelAndView mv, @RequestParam(defaultValue = "1", required = false) String page) {
 		int intpage = Integer.parseInt(page);
-		int cnt = deliverySvc.selectCount(null, today, today);
+		int cnt = deliverySvc.selectAllCount(today, today);
 		int maxpage = 1;
 		if(cnt%50!=0 ) {
 			maxpage = cnt/50+1;
@@ -76,8 +76,6 @@ public class DeliveryController {
 		mv.addObject("curpage", intpage);
 		mv.addObject("maxpage", maxpage);
 		mv.setViewName("/delivery/deliverymgr.jsp");
-		System.out.println(cnt);
-		System.out.println(lis.size());
 		return mv;
 	}
 	
@@ -100,7 +98,6 @@ public class DeliveryController {
 		mv.addObject("kind", "배달수정");
 		mv.addObject("result", result);
 		mv.setViewName("/result.jsp");
-		System.out.println(vo.toString());
 		return mv;
 	}
 }

@@ -18,12 +18,12 @@
 		<tr>
 			<th>번호</th><td><input type="text" name="no" value="${searchdetail.no}"></td>
 			<th>배달 상태</th><td><select id="d_status" name="d_status">
-    								<option value="">배달 상태</option>
+    								<option value="">전체</option>
     								<option value="0">미완료</option>
     								<option value="1">완료</option>
 								</select></td>
 			<th>고객 상태</th><td><select id="customer_status" name="customer_status">
-    								<option value="">고객 상태</option>
+    								<option value="">전체</option>
     								<option value="0">양호</option>
     								<option value="1">주의</option>
     								<option value="2">위험</option>
@@ -77,7 +77,15 @@
 				<td>${list.delivery_man_id}</td>
 			</tr>
 		</c:forEach>
+		<c:if test="${empty dlvlist}">
+			<tr>
+				<td colspan="9">
+					검색 결과가 없습니다.
+				</td>
+			</tr>
+		</c:if>
 	</table>
+	<c:if test="${not empty dlvlist}">
 	<div style="text-align: center">
 		<c:if test="${curpage>1}">
 			<button onclick="movetopage(1)">&lt;&lt;</button>
@@ -89,6 +97,7 @@
 			<button onclick="movetopage(${maxpage})">&gt;&gt;</button>
 		</c:if>
 	</div>
+	</c:if>
 	<%@include file="/WEB-INF/footer.jsp" %>
 </body>
 <script>
