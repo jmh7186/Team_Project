@@ -1,11 +1,14 @@
-/**
- * 
- */
+/*
+	페이지 전체 출력,조회시 페이지 출력,페이지 이동 버튼 메소드가 있는 클래스
+	파라매터 해당 페이지 이름,요소를 추가할 테이블 id
+	자식 DeliveryManTable, BoardQnATable
+*/
+
 class TableBuilder{
 	// 생성자
-	constructor(pageName,tblName){
+	constructor(pageName,tblId){
 		this.pageName = pageName;
-		this.tblName = tblName+' tbody';
+		this.tblId = tblId+' tbody';
     }
     
     // 오버라이딩용 행 메소드
@@ -25,6 +28,7 @@ class TableBuilder{
 				url='/delivery_man_page';
 				break;
 			case 'QnA' :
+				url='/QnA_list';
 				break;
 		}
 		
@@ -36,7 +40,7 @@ class TableBuilder{
 	        contentType: "application/json",
 	        success: (data) =>  {
 	        	//console.log('성공');
-	        	$(this.tblName +" tr:not(:first)").remove();
+	        	$(this.tblId +" tr:not(:first)").remove();
 	        	
 	        	//console.log(data);
 	        	
@@ -45,7 +49,7 @@ class TableBuilder{
 	                    row = this.rowContent(pageNo, index, item);
 		        	    
 		        	 	// 모든 데이터를 테이블에 추가
-						 $(this.tblName).append(row);
+						 $(this.tblId).append(row);
 	        		});
 		        	 	
 		        	
@@ -53,7 +57,7 @@ class TableBuilder{
 	        	    // 데이터 행 추가
 	        	    row = $("<tr>");
 	        	    row.append($("<td>").attr("id", "no_date_td").attr("rowspan", 10).attr("colspan", 9).text('조회된 데이터가 없습니다.'));
-	        	    $(this.tblName).append(this.row);
+	        	    $(this.tblId).append(this.row);
 	        	}
 		
 			}
@@ -76,6 +80,7 @@ class TableBuilder{
 				url='/delivery_man_srech';
 				break;
 			case 'QnA' :
+				url='/QNA_srech';
 				break;
 		}
 		
@@ -87,7 +92,7 @@ class TableBuilder{
 	        contentType: "application/json",
 	        success: (data) =>  {
 	        	//console.log('성공');
-	        	$(this.tblName +" tr:not(:first)").remove();
+	        	$(this.tblId +" tr:not(:first)").remove();
 	        	//console.log(data);
 	        	
 	        	if(data.length > 0){
@@ -96,14 +101,14 @@ class TableBuilder{
 		        	    row = this.rowContent(pageNo, index, item);
 		        	    
 		        	 	// 모든 데이터를 테이블에 추가
-						$(this.tblName).append(row);
+						$(this.tblId).append(row);
 	        		});
 		        	 	   	
 	        	} else {
 	        	    // 데이터 행 추가
 	        	    row = $("<tr>");
 	        	    row.append($("<td>").attr("id", "no_date_td").attr("rowspan", 10).attr("colspan", 9).text('조회된 데이터가 없습니다.'));
-	        	    $(this.tblName).append(row);
+	        	    $(this.tblId).append(row);
 	        	}
 	        	
 			}
@@ -112,6 +117,7 @@ class TableBuilder{
 	
 	// 페이지 이동 메소드
 	// 첫번째 페이지 메소드
+	
 	firstPage(page,searchParams){
 		// 페이지를 첫번째 페이지(1)로 설정
 		page = 1;
@@ -189,3 +195,5 @@ class TableBuilder{
 	}
     
 } 
+
+export default TableBuilder;

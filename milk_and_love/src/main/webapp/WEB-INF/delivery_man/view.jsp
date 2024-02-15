@@ -10,145 +10,13 @@
 	<link rel="stylesheet" href="/css/reset.css">
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/delivery_man.css">
-</head>
-<body>
+	
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/js/daum_postcode.js"></script>
-	
-	<script>
-		$(document).ready(function() {
-			// 전화번호 정규식
-		    var phoneReg = /^010\d{8}$/;
-			
-		 	//한글 이름 정규식
-		    var nameReg = /^[가-힣]{2,5}$/;
-			
-		    // 셀렉터에 옵션들 추가
-		    $.ajax({
-				url: "/load_area1_list_process",
-				type: "POST",
-				dataType: 'json',
-				success: function(data) {
-					//console.log(data);
-					
-					let content = "<option value=''>----- 시도 선택 -----</option>";
-					$.each(data, function(index, item) {
-						let code = item.CODE.slice(0, 2);
-						content += `<option data-code=\${code} value=\${item.AREA}>\${item.AREA}</option>`;
-					});
-					$("select[name=area1]").html(content);
-				}
-			});
-			
-			$("select[name=area1]").on("change", function() {
-				let area1_code = $(this).find("option:selected").data("code");
-				
-				$("select[name=area3]").html("<option value=''>----- 읍면동 선택 -----</option>");
-				
-				$.ajax({
-					url: "/load_area2_list_process",
-					type: "POST",
-					data: "area1_code=" + area1_code,
-					dataType: 'json',
-					success: function(data) {
-						//console.log(data);
-						
-						let content = "<option value=''>----- 시군구 선택 -----</option>";
-						$.each(data, function(index, item) {
-							let code = item.CODE.slice(0, 4);
-							content += `<option data-code=\${code} value=\${item.AREA}>\${item.AREA}</option>`;
-						});
-						$("select[name=area2]").html(content);
-					}
-				});
-			});
-			
-			$("select[name=area2]").on("change", function() {
-				let area2_code = $(this).find("option:selected").data("code");
-				
-				$.ajax({
-					url: "/load_area3_list_process",
-					type: "POST",
-					data: "area2_code=" + area2_code,
-					dataType: 'json',
-					success: function(data) {
-						//console.log(data);
-						
-						let content = "<option value='none'>----- 읍면동 선택 -----</option>";
-						$.each(data, function(index, item) {
-							content += `<option data-code=\${item.CODE} value=\${item.AREA}>\${item.AREA}</option>`;
-						});
-						$("select[name=area3]").html(content);
-					}
-				});
-			});
-			
-			// 각 필드의 초기 상태를 저장
-			var orginalStates = {};
-			$("form input, form select").each(function() {
-				orginalStates[this.id] = $(this).val();
-			});
-						
-			//수정 버튼이 눌렸을데 실행하는 스크립튼
-			$("#modify_btn").click(function(e) {
-			    var isChanged = false;
-				var changedStates={};
-			    
-				// 전화번호 입력란 대한 검증
-				if (!phoneReg.test($('#tel_input').val())) {
-					alert("전화번호 양식을 확인해주세요.");
-		            $('#tel').focus();
-		            return;
-		        }
-				
-				// 이름 입력란에 대한 검증
-		        if (!nameReg.test($('#name_input').val())) {
-		        	alert("이름을 확인해주세요.");
-		            $('#name').focus();
-		            return;
-		        }
-				
-			    // 각 필드의 현재 상태를 확인하고 초기 상태와 비교
-			    $("form input, form select").each(function() {
-			        if (orginalStates[this.id] !== $(this).val()) {
-			            isChanged = true;
-			            changedStates[this.id] = $(this).val();
-			        }
-			    });
-    
-			    // 하나 이상의 필드가 변경되지 않았다면 폼 전송을 막기
-			    if (!isChanged) {
-			        e.preventDefault();
-			        alert("하나 이상 변경해야합니다.");
-			        
-			    } else {
-			    	
-			    	changedStates['id']= $("#id").text();
-			    	$.ajax({
-				        url: '/modify_delivery_man',
-				        type: 'POST',
-				        data: JSON.stringify(changedStates),
-				        contentType: "application/json",
-				        success: function(data) {
-				        	if(data == 1){
-				        		alert("변경이 완료되었습니다.");
-				        	} else{
-				        		alert("서버에 문제가 생겼습니다 관리자에게 이야기해주세요.");
-				        	}
-				        }
-					})
-			    }
-			});
-			
-			// 목록 버튼 스크립트
-			$("#list_btn").click(function(){
-				window.location = "/delivery_man/list";
-			})
-			
-		})
-	</script>
-	
+	<script type="module" src="/js/delivery_man/view.js"></script>
+</head>
+<body>
 	<%@include file="/WEB-INF/header.jsp" %>
 	<!-- 배달원 정보 -->
 	<div id="delivery_man_wrap">
@@ -167,6 +35,7 @@
 						<tr>
 							<th class="cal">상태</th>
 							<td class="row">
+							<c:if test="${vo.status != 2}">
 								<select id="status_select" name="status">
 									<c:choose>
 						        		<c:when test="${vo.status == 0}">
@@ -179,16 +48,16 @@
 						        			<option value="0">대기</option>
 						        			<option value="1" selected="selected">유효</option>
 						        			<option value="2">만료</option>
-						        		</c:when>	
-						        							   
-						        		<c:when test="${vo.status == 2}">
-						        			<option value="0">대기</option>
-						        			<option value="1">유효</option>
-						        			<option value="2" selected="selected">만료</option>
 						        		</c:when>
 						    		</c:choose>
 								</select>
-
+							</c:if>
+							
+							<c:if test="${vo.status == 2}">
+								<input type="hidden" id="status" value="2">
+								<p>만료</p>
+							</c:if>
+							
 							</td>
 						</tr>
 						<tr>
@@ -220,12 +89,15 @@
 						<tr>
 							<th class="cal">담당지</th>
 							<td class="row">
+								<input type="hidden" id="vo_arae1" value="${vo.area1}">
 								<select id="area1" name="area1">
 									<option value="">----- 시도 선택 -----</option>
 								</select>
+								<input type="hidden" id="vo_arae2" value="${vo.area2}">
 								<select id="area2" name="area2">
 									<option value="">----- 시군구 선택 -----</option>
 								</select>
+								<input type="hidden" id="vo_arae3" value="${vo.area3}">
 								<select id="area3" name="area3">
 									<option value="">----- 읍면동 선택 -----</option>
 								</select>
