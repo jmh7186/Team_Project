@@ -48,6 +48,11 @@ public class BoardNoticeService implements BoardNoticeMapper {
 	public int insert(BoardNoticeVO vo) {
 		return mapper.insert(vo);
 	}
+
+	@Override
+	public int updateViews(String no) {
+		return mapper.updateViews(no);
+	}
 	
 	@Override
 	public BoardNoticeVO select(String no) {
@@ -56,7 +61,7 @@ public class BoardNoticeService implements BoardNoticeMapper {
 
 	@Override
 	public int update(BoardNoticeVO vo) {
-		return update(vo);
+		return mapper.update(vo);
 	}
 	
 }

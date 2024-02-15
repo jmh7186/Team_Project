@@ -16,6 +16,7 @@ public interface BoardNoticeMapper {
 	public int updateStatusToHide(String[] nos);
 	public int updateStatusToDisplay(String[] nos);
 	public int insert(BoardNoticeVO vo);
+	public int updateViews(String no);
 	public BoardNoticeVO select(String no);
 	public int update(BoardNoticeVO vo);
 }

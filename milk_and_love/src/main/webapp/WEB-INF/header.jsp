@@ -14,6 +14,7 @@
 		<ul>
 			<li>${sessionScope.id}님</li>
 			<li><a href="/logout">로그아웃</a></li>
+			<li><a href="/mypage">마이페이지</a></li>
 		</ul>
 	</div>
 	<!-- // GNB -->
@@ -41,7 +42,7 @@
 					<li><a href="/customer/join">신규 고객 등록</a></li>
 				</ul>
 			</li>
-			<li>1:1 문의</li>
+			<li><a href="/QnA">1:1 문의</a></li>
 			<li>
 				공지사항
 				<ul>

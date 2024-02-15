@@ -6,4 +6,5 @@
 	<select id="selectById">select id,pw,name,tel from manager where id=#{id}</select>
 	<update id="update">update manager set pw=#{pw}, name=#{name}, tel=#{tel} where id=#{id}</update>
 	<delete id="delete">delete manager where id=#{id}</delete>
+	<update id="updatepw">update manager set pw=#{newpw} where id=#{id}</update>
 </mapper>

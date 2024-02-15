@@ -46,6 +46,13 @@
 									<textarea name="content">${vo.content}</textarea>
 								</td>
 							</tr>
+							<tr>
+								<th>숨김 설정</th>
+								<td colspan="3">
+									<input type="radio" name="is_hidden" value="0" <c:if test="${vo.is_hidden eq 0}"> checked </c:if>>표시
+									<input type="radio" name="is_hidden" value="1" <c:if test="${vo.is_hidden eq 1}"> checked </c:if>>숨김
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					

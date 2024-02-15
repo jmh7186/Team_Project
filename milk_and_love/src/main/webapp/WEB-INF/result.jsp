@@ -24,6 +24,34 @@
 			location.href='/deliverymgr';
 		}
 	}
+	
+	if(${kind=="listnull"}) {
+		alert('정보를 찾을 수 없습니다.');
+		history.back();
+	}
+	
+	if(${kind=="mgrupdate"}) {
+		if(${result==0}) {
+			alert('수정에 실패했습니다.');
+			history.back();
+		}else if(${result==1}) {
+			location.href='/mypage';
+		}
+	}
+	
+	if(${kind=="updatepw"}) {
+		if(${result==0}) {
+			alert('수정에 실패했습니다.');
+			history.back();
+		}else if(${result==1}) {
+			alert('비밀번호 변경을 완료했습니다.');
+			opener.parent.location.reload();
+			window.close();
+		}else if(${result==2}) {
+			alert('현재 비밀번호가 맞지 않습니다.');
+			history.back();
+		}
+	}
 </script>
 </head>
 </html>

@@ -7,14 +7,17 @@
 <meta charset="UTF-8">
 <title>배달 관리</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<div>배달 조회</div><hr>
+	<%@include file="/WEB-INF/header.jsp" %>
+	<h1>배달 조회</h1><hr>
 	<form id="form" action="/deliverymgr" method="POST">
 	<table border="1" style="margin: auto">
 		<tr>
 			<th>번호</th><td><input type="text" name="no" value="${searchdetail.no}"></td>
-			<th>배달 상태</th><td><select id="delivery_status" name="delivery_status">
+			<th>배달 상태</th><td><select id="d_status" name="d_status">
     								<option value="">배달 상태</option>
     								<option value="0">미완료</option>
     								<option value="1">완료</option>
@@ -64,9 +67,9 @@
 		<c:forEach var="list" items="${dlvlist}" varStatus="s">
 			<tr>
 				<td>${50*(curpage-1)+s.count}</td>
-				<td><a href="/deliverymgr/detail/${list.no}?page=${curpage}">${list.no}</a></td>
+				<td><a href="/deliverymgr/detail/${list.no}">${list.no}</a></td>
 				<td>${list.due_date}</td>
-				<td>${list.delivery_status}</td>
+				<td>${list.d_status}</td>
 				<td>${list.customer_status}</td>
 				<td>${list.customer_id}</td>
 				<td>${list.customer_name}</td>
@@ -86,6 +89,7 @@
 			<button onclick="movetopage(${maxpage})">&gt;&gt;</button>
 		</c:if>
 	</div>
+	<%@include file="/WEB-INF/footer.jsp" %>
 </body>
 <script>
 	if(${not empty startdate}) {
@@ -111,11 +115,11 @@
  		}
  	}
  	
- 	if(${not empty searchdetail.delivery_status}) {
- 		delivery_status = document.getElementById('delivery_status');
- 		for(i=0; i<delivery_status.options.length; i++) {
- 			if(delivery_status.options[i].value == '${searchdetail.delivery_status}') {
- 				delivery_status.options[i].selected = true;
+ 	if(${not empty searchdetail.d_status}) {
+ 		d_status = document.getElementById('d_status');
+ 		for(i=0; i<d_status.options.length; i++) {
+ 			if(d_status.options[i].value == '${searchdetail.d_status}') {
+ 				d_status.options[i].selected = true;
  			}
  		}
  	}
