@@ -54,4 +54,9 @@ public class DeliveryService implements DeliveryMapper{
 		return mapper.search(vo, startdate, enddate, page);
 	}
 
+	@Override
+	public int selectAllCount(String startdate, String enddate) {
+		return mapper.selectAllCount(startdate, enddate);
+	}
+
 }

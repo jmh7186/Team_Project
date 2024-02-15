@@ -15,6 +15,7 @@ public interface DeliveryMapper {
 	public List<DeliveryVO> selectByPage(@Param("page") String page);
 	public int update(DeliveryVO vo);
 	public int delete(String no);
+	public int selectAllCount(@Param("startdate") String startdate, @Param("enddate") String enddate);
 	public int selectCount(@Param("vo") DeliveryVO vo, @Param("startdate") String startdate, @Param("enddate") String enddate);
 	public List<DeliveryVO> search(@Param("vo") DeliveryVO vo, @Param("startdate") String startdate, @Param("enddate") String enddate, @Param("page") String page);
 }
