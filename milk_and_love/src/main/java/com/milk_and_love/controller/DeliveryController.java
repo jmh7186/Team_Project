@@ -83,9 +83,14 @@ public class DeliveryController {
 	
 	@GetMapping("/deliverymgr/detail/{no}")
 	public ModelAndView deliveryDetail(ModelAndView mv, @PathVariable("no") String no) {
-		
-		mv.setViewName("/delivery/deliverymgr_update.jsp");
-		mv.addObject("vo", deliverySvc.selectByNo(no));
+		DeliveryVO list = deliverySvc.selectByNo(no);
+		if(list==null) {
+			mv.addObject("kind", "listnull");
+			mv.setViewName("/result.jsp");
+		}else {
+			mv.addObject("vo", list);
+			mv.setViewName("/delivery/deliverymgr_update.jsp");
+		}
 		return mv;
 	}
 	

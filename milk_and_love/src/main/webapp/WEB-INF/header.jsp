@@ -14,6 +14,7 @@
 		<ul>
 			<li>${sessionScope.id}님</li>
 			<li><a href="/logout">로그아웃</a></li>
+			<li><a href="/mypage">마이페이지</a></li>
 		</ul>
 	</div>
 	<!-- // GNB -->

@@ -39,4 +39,9 @@ public class ManagerService implements ManagerMapper{
 		return mapper.delete(id);
 	}
 
+	@Override
+	public int updatepw(String id, String newpw) {
+		return mapper.updatepw(id, newpw);
+	}
+
 }

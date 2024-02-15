@@ -20,7 +20,6 @@
 			</td>
 			<th>배달일</th>
 			<td><span id="olddata1">${vo.due_date}</span>
-				<input id="due_date" type="date" name="due_date" hidden="true" value="${vo.due_date}">
 			</td>
 			<th>배달 상태</th>
 			<td colspan="3"><span id="olddata2">${vo.d_status}</span>
@@ -71,14 +70,12 @@
 </body>
 <script>
 	function update() {
-		document.getElementById('due_date').hidden=false;
 		document.getElementById('d_status').hidden=false;
 		document.getElementById('customer_status').hidden=false;
 		document.getElementById('backbtn').hidden=true;
 		document.getElementById('updatebtn').hidden=true;
 		document.getElementById('cancelbtn').hidden=false;
 		document.getElementById('submitbtn').hidden=false;
-		document.getElementById('olddata1').innerHTML='';
 		document.getElementById('olddata2').innerHTML='';
 		document.getElementById('olddata3').innerHTML='';
 	}

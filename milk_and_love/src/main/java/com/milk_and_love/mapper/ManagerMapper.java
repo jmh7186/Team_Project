@@ -13,4 +13,5 @@ public interface ManagerMapper {
 	public ManagerVO selectById(String id);
 	public int update(ManagerVO vo);
 	public int delete(String id);
+	public int updatepw(String id, String newpw);
 }
