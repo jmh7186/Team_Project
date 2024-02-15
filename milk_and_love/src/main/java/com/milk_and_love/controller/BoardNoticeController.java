@@ -105,15 +105,19 @@ public class BoardNoticeController {
 	// 공지사항 등록
 	@PostMapping("/notice/post_process")
 	@ResponseBody
-	public int postProcess(BoardNoticeVO vo) {
-		vo.setAuthor("admin");	// 테스트용 (원래는 로그인되어 있는 관리자의 ID로 세팅해야 함)
+	public int postProcess(HttpServletRequest request, BoardNoticeVO vo) {
+		HttpSession session = request.getSession();
 		
+		vo.setAuthor(session.getAttribute("id").toString());
 		return service.insert(vo);
 	}
 	
 	// 공지사항 확인 및 수정 페이지
 	@GetMapping("/notice/view")
 	public ModelAndView view(ModelAndView mav, @RequestParam String no) {
+		// 조회수 증가
+		service.updateViews(no);
+		
 		// 공지사항 정보가 담긴 VO 객체
 		BoardNoticeVO vo = service.select(no);
 		mav.addObject("vo", vo);
