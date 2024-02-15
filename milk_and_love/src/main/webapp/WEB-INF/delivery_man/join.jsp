@@ -13,6 +13,7 @@
 <body>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/daum_postcode.js"></script>
 	<script>
 	 	
 		$(document).ready(function() {
@@ -222,7 +223,7 @@
 							<th class="cal" rowspan="3">거주지</th>
 							<td class="row">
 								<input type="text" id="post_code" name="post_num"readonly>
-								<button type="button" id="address_btn">찾기</button>
+								<button type="button" id="address_btn" onclick="daumPostcode()">찾기</button>
 							</td>
 						</tr>
 						<tr>

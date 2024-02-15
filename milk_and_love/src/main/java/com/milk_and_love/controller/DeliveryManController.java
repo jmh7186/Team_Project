@@ -32,6 +32,7 @@ public class DeliveryManController {
 			
 			int size = Integer.parseInt(rowCountPerPage);
 			
+			int totalPages = 0;
 			//첫번째 페이지 설정
 			model.addObject("page", page+1);
 			
@@ -42,7 +43,12 @@ public class DeliveryManController {
 			// 나머지 페이지 설정
 			int count = service.totalPage();
 			
-			int totalPages = count/size;
+			if (count%size == 0) {
+				totalPages = count/size;
+			} else {
+				totalPages = count/size+1;
+			}
+			
 			
 			model.addObject("totalPages", totalPages);
 			
@@ -61,15 +67,19 @@ public class DeliveryManController {
 		@GetMapping("/delivery_man/view")
 		public ModelAndView deliveryManInfo(ModelAndView model, @RequestParam("id") String id) {
 			
-			System.out.println(id);
+			//System.out.println(id);
 			
 			DeliveryManVO DeliveryManVO = service.selectOne(id);
 			
-			System.out.println(DeliveryManVO);
+			//System.out.println(DeliveryManVO);
 			
-			model.addObject("vo", DeliveryManVO);
-			model.setViewName("/delivery_man/view.jsp");
-			
+			if (DeliveryManVO != null) {
+				model.addObject("vo", DeliveryManVO);
+				model.setViewName("/delivery_man/view.jsp");
+			} else {
+				model.setViewName("/delivery_man/list.jsp");
+			}
+
 			return model;
 		}
 		
@@ -85,7 +95,7 @@ public class DeliveryManController {
 		@PostMapping("/modify_delivery_man")
 		@ResponseBody
 		public int deliveryManModify(@RequestBody(required=false) Map<String, Object> updates) {
-			System.out.println(updates);
+			//System.out.println(updates);
 			
 			int result = service.update(updates);
 			
@@ -96,7 +106,7 @@ public class DeliveryManController {
 		@PostMapping("/new_delivery_man")
 		@ResponseBody
 		public int deliveryManJoin(@RequestBody(required=false) Map<String, Object> joinDate) {
-			System.out.println(joinDate);
+			//System.out.println(joinDate);
 			
 			int result = service.insert(joinDate);
 			
@@ -113,6 +123,7 @@ public class DeliveryManController {
 		@PostMapping("/load_area2_list_process")
 		@ResponseBody
 		public List<Map<String, Object>> loadArea2ListProcess(@RequestParam("area1_code") String arae1Code) {
+			//System.out.println(arae1Code);
 			return service.selectArea2List(arae1Code);
 		}
 		
@@ -132,8 +143,8 @@ public class DeliveryManController {
 		    List<String> ids = (List<String>) map.get("ids");
 		    int status = Integer.parseInt((String) map.get("status")); 
 		    
-		    System.out.println(ids);
-		    System.out.println(status);
+		    //System.out.println(ids);
+		    //System.out.println(status);
 		    
 		    if (ids != null) {
 		        for (String id : ids) {
@@ -162,7 +173,7 @@ public class DeliveryManController {
 		@ResponseBody
 		public List<DeliveryManVO> pageFind(@RequestBody(required=false) Map<String, Object>  page) {
 			
-			System.out.println(page);
+			//System.out.println(page);
 			int size = Integer.parseInt(rowCountPerPage);
 			
 			int pageNo = 0;
@@ -178,13 +189,13 @@ public class DeliveryManController {
 			int start = (pageNo - 1) * size + 1;
 			int end = pageNo * size;
 			
-			System.out.println("page_number: "+start);
-			System.out.println("size: " +end);
+			//System.out.println("page_number: "+start);
+			//System.out.println("size: " +end);
 			
 			//배달원 정보 불러오기 및 설정
 			List<DeliveryManVO> voList = service.selectAll(start, end);
 		    
-			System.out.println(voList);
+			//System.out.println(voList);
 			
 		    return voList;
 		}
@@ -193,7 +204,7 @@ public class DeliveryManController {
 		@PostMapping("/delivery_man_srech")
 		@ResponseBody
 		public List<DeliveryManVO> deliveryManSearch(@RequestBody(required=false) Map<String, Object>  keyWords) {
-			System.out.println(keyWords);
+			//System.out.println(keyWords);
 			
 			int pageNo = 0;
 			
@@ -209,8 +220,8 @@ public class DeliveryManController {
 			int start = (pageNo - 1) * size + 1;
 			int end = pageNo * size;
 			
-			System.out.println(start);
-			System.out.println(end);
+			//System.out.println(start);
+			//System.out.println(end);
 			keyWords.remove("page");
 			keyWords.put("start", start);
 			keyWords.put("end", end);
@@ -218,6 +229,8 @@ public class DeliveryManController {
 			//배달원 정보 불러오기 및 설정
 			List<DeliveryManVO> voList = service.search(keyWords);
 		    
+			//System.out.println(voList);
+			
 		    return voList;
 		}
 		
@@ -225,7 +238,7 @@ public class DeliveryManController {
 		@PostMapping("/delivery_man_maxpage")
 		@ResponseBody
 		public int deliveryManMaxpage(@RequestBody(required=false) Map<String, Object>  keyWords) {
-			System.out.println(keyWords);
+			//System.out.println(keyWords);
 			int size = Integer.parseInt(rowCountPerPage);
 			
 			int total =  service.searchTotalPage(keyWords)/size;

@@ -10,210 +10,18 @@
 	<link rel="stylesheet" href="/css/reset.css">
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/delivery_man.css">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/js/tableBuilder.js"></script>
+	<script src="/js/delivery_man/list.js"></script>
+	<script src="/js/delivery_man/AreaSelect.js"></script>
 </head>
 <body>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
 	<script>
-		// 테이블에 페이지를 추가하는 펑션
-		function showPage(page) {
-			
-			var pageNo = parseInt(page)*50-50+1;
-			
-			var row;
-			
-			$.ajax({
-		        url: '/delivery_man_page',
-		        type: 'POST',
-		        dataType: "json",
-		        data: JSON.stringify({'page': page}),
-	            contentType: "application/json",
-		        success: function(data) {
-		        	//console.log('성공');
-		        	$("#deliveryman_tbl tbody tr:not(:first)").remove();
-		        	console.log(data);
-		        	
-		        	if(data.length > 0){
-		        		$.each(data, function(index, item) {
-			        	    row = $("<tr>");
-			        	    
-			        	    // 체크박스 필드
-			        	    var checkboxCell = $("<td>").attr("class", "checkbox_td");
-			        	    if (item.status!=2) {
-			        	    	var checkbox = $("<input>").attr("type", "checkbox").attr("class", "checkboxs").attr("name", "delivery_man_checked");
-			        	    	checkboxCell.append(checkbox);
-							}
-			        	    row.append(checkboxCell);
-
-			        	    // '번호' 필드
-			        	    row.append($("<td>").attr("class", "no_td").text(pageNo + index));
-
-			        	    // 'ID' 필드
-			        	    var idCell = $("<td>").attr("class", "id_td");
-			        	    var idLink = $("<a>").attr("href", "/delivery_man/view?id=" + item.id).text(item.id);
-			        	    idCell.append(idLink);
-			        	    row.append(idCell);
-
-			        	    // '등록일' 필드
-			        	    row.append($("<td>").attr("class", "pw_td").text(item.join_date));
-
-			        	    // '이름' 필드
-			        	    row.append($("<td>").attr("class", "name_td").text(item.name));
-
-			        	    // '연락처' 필드
-			        	    row.append($("<td>").attr("class", "tel_td").text(item.tel));
-							
-			        	    // '주소' 필드
-			        	    var area = "";
-			        	    if (item.area3 != null) {
-			        	    	row.append($("<td>").attr("class", "area_td").text(item.area1+" "+item.area2+" "+item.area3));
-							} else {
-								row.append($("<td>").attr("class", "area_td").text(item.area1+" "+item.area2));
-							}
-			        	    
-			        	    
-			        	 	// '상태' 필드
-			        	    var statusCell = $("<td>").attr("class","status_td");
-			        	    if (item.status == 0) {
-			        	        statusCell.text('대기');
-			        	    } else if (item.status == 1) {
-			        	        statusCell.text('유효');
-			        	    } else {
-			        	        statusCell.text('만료');
-			        	    }
-			        	    row.append(statusCell);
-
-			        	    // '상태 버튼 필드'
-			        	    var approveCell = $("<td>").attr("class", "approve_td");
-			        	    if (item.status == 0) {
-			        	        var approveButton = $("<button>").attr("type", "button").attr("id", "approve_btn").attr("value", "1").text("승인");
-			        	        var refuseButton = $("<button>").attr("type", "button").attr("id", "refuse_btn").attr("value", "2").text("해지");
-			        	        approveCell.append(approveButton);
-			        	        approveCell.append(refuseButton);
-			        	    } else if (item.status == 1) {
-			        	        var refuseButton = $("<button>").attr("type", "button").attr("id", "refuse_btn").attr("value", "2").text("해지");
-			        	        approveCell.append(refuseButton);
-			        	    }
-			        	    
-			        	    row.append(approveCell);
-			        	    
-			        	 	// 모든 데이터를 테이블에 추가
-			        	    $("#deliveryman_tbl tbody").append(row);  
-		        		});
-			        	 	
-			        	
-		        	} else {
-		        	    // 데이터 행 추가
-		        	    row = $("<tr>");
-		        	    row.append($("<td>").attr("id", "no_date_td").attr("rowspan", 10).attr("colspan", 9).text('조회된 데이터가 없습니다.'));
-		        	    $("#deliveryman_tbl tbody").append(row);
-		        	}
-			
-				}
-			});
-		}
-		
-		// 검색기능 펑션
-		function srech(keyWords,page) {
-			
-			var pageNo = parseInt(page);
-			
-			keyWords['page'] = pageNo;
-			
-			$.ajax({
-		        url: '/delivery_man_srech',
-		        type: 'POST',
-		        dataType: "json",
-		        data: JSON.stringify(keyWords),
-	            contentType: "application/json",
-		        success: function(data) {
-		        	console.log('성공');
-		        	$("#deliveryman_tbl tbody tr:not(:first)").remove();
-		        	
-		        	pageNo = parseInt(page)*50-50+1;
-		        	if(data.length > 0){
-			        	$.each(data, function(index, item) {
-			        	    var row = $("<tr>");
-							
-			        	    // 체크박스 필드
-			        	    var checkboxCell = $("<td>").attr("class", "checkbox_td");
-			        	    if (item.status!=2) {
-			        	    	var checkbox = $("<input>").attr("type", "checkbox").attr("class", "checkboxs").attr("name", "delivery_man_checked");
-			        	    	checkboxCell.append(checkbox);
-							}
-			        	    row.append(checkboxCell);
-	
-			        	    // '번호' 필드
-			        	    row.append($("<td>").attr("class", "no_td").text(pageNo + index));
-	
-			        	    // 'ID' 필드
-			        	    var idCell = $("<td>").attr("class", "id_td");
-			        	    var idLink = $("<a>").attr("href", "/delivery_man/view?id=" + item.id).text(item.id);
-			        	    idCell.append(idLink);
-			        	    row.append(idCell);
-	
-			        	    // '등록일' 필드
-			        	    row.append($("<td>").attr("class", "pw_td").text(item.join_date));
-	
-			        	    // '이름' 필드
-			        	    row.append($("<td>").attr("class", "name_td").text(item.name));
-	
-			        	    // '연락처' 필드
-			        	    row.append($("<td>").attr("class", "tel_td").text(item.tel));
-							
-			        	    // '주소' 필드
-			        	    var area = "";
-			        	    if (item.area3 != null) {
-			        	    	row.append($("<td>").attr("class", "area_td").text(item.area1+" "+item.area2+" "+item.area3));
-							} else {
-								row.append($("<td>").attr("class", "area_td").text(item.area1+" "+item.area2));
-							}
-			        	    
-			        	    
-			        	 	// '상태' 필드
-			        	    var statusCell = $("<td>").attr("class","status_td");
-			        	    if (item.status == 0) {
-			        	        statusCell.text('대기');
-			        	    } else if (item.status == 1) {
-			        	        statusCell.text('유효');
-			        	    } else {
-			        	        statusCell.text('만료');
-			        	    }
-			        	    row.append(statusCell);
-	
-			        	    // '상태 버튼 필드'
-			        	    var approveCell = $("<td>").attr("class", "approve_td");
-			        	    if (item.status == 0) {
-			        	        var approveButton = $("<button>").attr("type", "button").attr("id", "approve_btn").attr("value", "1").text("승인");
-			        	        var refuseButton = $("<button>").attr("type", "button").attr("id", "refuse_btn").attr("value", "2").text("해지");
-			        	        approveCell.append(approveButton);
-			        	        approveCell.append(refuseButton);
-			        	    } else if (item.status == 1) {
-			        	        var refuseButton = $("<button>").attr("type", "button").attr("id", "refuse_btn").attr("value", "2").text("해지");
-			        	        approveCell.append(refuseButton);
-			        	    }
-			        	    
-			        	    row.append(approveCell);
-			        	    
-			        	    // 모든 데이터를 테이블에 추가
-			        	    $("#deliveryman_tbl tbody").append(row);
-			        	});
-			        } else {
-		        	    // 데이터 행 추가
-		        	    row = $("<tr>");
-		        	    row.append($("<td>").attr("id", "no_date_td").attr("rowspan", 10).attr("colspan", 9).text('조회된 데이터가 없습니다.'));
-		        	    $("#deliveryman_tbl tbody").append(row);
-		        	}
-		        	
-				}
-			});
-		}
-		
-		
-		
 		$(document).ready(function() {
 			// 오늘 날짜 변수
 			var today = new Date().toISOString().substring(0, 10);
-		    
+			
 		    //체크된 id를 담을 변수
 		 	var chaekedIds = [];
 		    
@@ -226,27 +34,30 @@
 		    // 검색할 키워드들을 담은 변수
 		    var searchParams = {};
 		    
-			// 셀렉터에 옵션들 추가
-		    $.ajax({
-				url: "/load_area1_list_process",
-				type: "POST",
-				dataType: 'json',
-				success: function(data) {
-					//console.log(data);
-					
-					let content = "<option value=''>----- 시도 선택 -----</option>";
-					$.each(data, function(index, item) {
-						let code = item.CODE.slice(0, 2);
-						content += `<option data-code=\${code} value=\${item.AREA}>\${item.AREA}</option>`;
-					});
-					$("select[name=area1]").html(content);
-				}
-			});
-			
-		    //console.log(page)
+		    var tableName = '#deliveryman_tbl';
+		    var pageName = 'delivery_man';
+		    
+		    var tableBuilder = new DeliveryManTable(pageName,tableName);
+		    
+		     //console.log(page)
 		    //console.log(totalPages)
 		    
-		    showPage(page);
+		    tableBuilder.showPage(page);
+		     
+		    // 셀렉터 추가
+		    addArea1Select();
+		    
+		    $("select[name=area1]").on("change", function() {
+		    	let area1_code = $(this).find("option:selected").data("code");
+		    	//console.log(area1_code);
+		    	addArea2Select(area1_code);
+		    });
+		    
+		    $("select[name=area2]").on("change", function() {
+		    	let area2_code = $(this).find("option:selected").data("code");
+		    	addArea3Select(area2_code);
+		    });
+		    
 		    
 		    // 달력을 오늘 날짜로 설정하고 오늘날짜 이후로 설정 모하게 하는 스크립트
 			// 달력을 오늘 날짜로 수정
@@ -260,25 +71,7 @@
 		    $('.day_btn').click(function() {
 		    	// 누른 버튼의 아이디 가져오기
 		        var id = $(this).attr('id');
-		        var date;
-
-		        // ID에 따라 날짜를 설정
-		        if (id === "today") {
-		            $('#start_day').val(today);
-		        } else if (id === "oneWeek") {
-		        	// 일주일 전 설정
-		            date = new Date();
-		            date.setDate(date.getDate() - 7); 
-		            var oneWeek = date.toISOString().substring(0, 10);
-		            $('#start_day').val(oneWeek);
-		            
-		        } else if (id === "oneMonth") {
-		        	// 한 달 전 설정
-		            date = new Date();
-		            date.setMonth(date.getMonth() - 1); 
-		            var oneMonth = date.toISOString().substring(0, 10);
-		            $('#start_day').val(oneMonth);
-		        }
+		        tableBuilder.timeSet(id,today);
 	        });
 		    
 		    // 조회 버튼 펑션
@@ -307,10 +100,12 @@
 	                    searchParams[id] = value;
 	                }
 		        });
+		        
 		        //console.log(searchParams);
+		        
 		        page = 1;
 		        
-		        srech(searchParams,page);
+		        tableBuilder.srech(searchParams,page);
 		        
 		        $.ajax({
 			        url: '/delivery_man_maxpage',
@@ -321,10 +116,10 @@
 			        success: function(data) {
 			        	totalPages = data;
 			        	if(totalPages == 0){
-			        		$('#totalPages').text(1);
-			        	} else{
-			        		$('#totalPages').text(totalPages);
-			        	}
+		        			totalPages = 1;
+			        	};
+			        	
+			        	$('#totalPages').text(totalPages);
 			        	$('#page_input').val(page);
 			        }
 		        })
@@ -333,7 +128,7 @@
 		    
 		    
 		    // 체크박스 전체 선택 해제 펑션
-		    $('#all_check').click(function(){
+		    $('#all_check, .checkboxs').click(function(){
 				var checked = $('#all_check').is(':checked');
 				
 				if(checked){
@@ -362,9 +157,9 @@
 			                    alert("변경이 완료되었습니다.");
 			                    
 			                    if(Object.keys(searchParams).length == 0){
-			    		    		showPage(page);
+			                    	showPage(page,tableName);;
 			                    } else{
-			                    	srech(searchParams,page)	
+			                    	srech(searchParams,page,tableName)	
 			                    }
 			                    
 			                } else {
@@ -392,7 +187,8 @@
 		            isChecked = true;
 		        });
 
-		        console.log(checkedIds);
+		        //console.log(checkedIds);
+		        
 		        if (isChecked) {
 		        	if (confirm("해당 배달원들의 상태를 변경하시겠습니까?")) {
 						
@@ -406,9 +202,9 @@
 				                if (data === 1) {
 				                    alert("변경이 완료되었습니다.");
 				                    if(Object.keys(searchParams).length == 0){
-				    		    		showPage(page);
+				                    	tableBuilder.showPage(page,tableName);;
 				                    } else{
-				                    	srech(searchParams,page)	
+				                    	tableBuilder.srech(searchParams,page,tableName)	
 				                    }
 
 				                } else {
@@ -424,74 +220,31 @@
 		        
 		    });
 		    
-		    // 페이징 버튼 펑션들
-		    
+			// 페이지 버튼 펑션들
+			
 		    // 첫번째 페이지 평선
 		    $('#first_page_btn').click(function() {
-		    	page = 1;
-		    	console.log(page);
-		    	console.log(searchParams);
-		    	$('#page_input').val(page);
-		    	
-		    	if(Object.keys(searchParams).length == 0){
-		    		showPage(page);
-                } else{
-                	srech(searchParams,page)	
-                }
+		    	page = tableBuilder.firstPage(page,searchParams);
 		    });
 		    
 		    // 이전 페이지 펑션
 		    $('#previous_page_btn').click(function() {
-		    	if (parseInt(page) != 1) {
-		    		page = parseInt(page)-1;
-				}
-		    	console.log(page);
-		    	console.log(searchParams);
-		    	$('#page_input').val(page);
-		    	
-		    	if(Object.keys(searchParams).length == 0){
-		    		showPage(page);
-                } else{
-                	srech(searchParams,page)	
-                }
+		    	page = tableBuilder.previousPage(page,searchParams);
 		    });
 		    
 		    // 다음 페이지 펑션
 		    $('#next_page_btn').click(function() {
-		    	if (parseInt(page) != parseInt(totalPages)) {
-		    		page = parseInt(page)+1;
-				}
-		    	console.log(page);
-		    	console.log(searchParams);
-		    	$('#page_input').val(page);
-		    	
-		    	if(Object.keys(searchParams).length == 0){
-		    		showPage(page);
-                } else{
-                	srech(searchParams,page)	
-                }
+		    	page = tableBuilder.nextPage(page,totalPages,searchParams);
 		    });
 		    
 		    // 마지막 페이지 펑션
 		    $('#last_page_btn').click(function() {
-		    	page = totalPages;
-		    	
-		    	console.log(page);
-		    	console.log(searchParams);
-		    	$('#page_input').val(page);
-		    	
-		    	if(Object.keys(searchParams).length !== 0){
-                	srech(searchParams,page)
-                } else{
-                	showPage(page);
-                }
+		    	page = tableBuilder.lastPage(page,totalPages,searchParams);
 		    	
 		    });
 		    
-		    
-		    
-		    
 		});
+		
 	</script>
 
 	<%@include file="/WEB-INF/header.jsp" %>
