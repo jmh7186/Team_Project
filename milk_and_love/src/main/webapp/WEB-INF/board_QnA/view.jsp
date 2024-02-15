@@ -6,13 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>QnA상세</title>
+
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/delivery_man.css">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 </head>
 <body>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	
 	<script>
 	
 	$(document).ready(function() {
+		var a_content = $('#a_content').val();
 		
 		// 취소 버튼 스크립트
 		$("#cancel_btn").click(function(){
@@ -23,36 +29,47 @@
 		// 답변 등록 스크립트
 		$("#registration_btn").click(function(){
 			if (confirm('답변을 등록 하시겠습니까?')) {
-		
-			var anserParams = {};
+				if($('#a_content').val().trim() != "" || $('#a_content').val() != a_content){
+				
 			
-			var no = ${vo.no}
-			
-			// 관리자 아이디를 저장 하는 부분이 없기에 임시로 admin으로 설정함
-			//var managerId = ${admin_id};
-			var managerId = 'admin'; // 임시 매니저 아이디
-			
-			var content = $("#a_content").val();
-			
-			anserParams['a_author']  = managerId;
-			anserParams['a_content'] = content
-			anserParams['no'] = no;
-			
-			$.ajax({
-		        url: '/QNA_answer',
-		        type: 'POST',
-		        dataType: "json",
-		        data: JSON.stringify(anserParams),
-	            contentType: "application/json",
-		        success: function(data) {
-		        	if(data == 1) {
-		        		alert("답변이 등록 되었습니다.");
+					var anserParams = {};
+					
+					var no = ${vo.no}
+					
+					// 관리자 아이디를 저장 하는 부분이 없기에 임시로 admin으로 설정함
+					//var managerId = ${admin_id};
+					var managerId = 'admin'; // 임시 매니저 아이디
+					
+					var content = $("#a_content").val();
+					
+					anserParams['a_author']  = managerId;
+					anserParams['a_content'] = content
+					anserParams['no'] = no;
+					
+					$.ajax({
+				        url: '/QNA_answer',
+				        type: 'POST',
+				        dataType: "json",
+				        data: JSON.stringify(anserParams),
+			            contentType: "application/json",
+				        success: function(data) {
+				        	if(data == 1) {
+				        		alert("답변이 등록 되었습니다.");
+				        		location.reload(true);
+							} else{
+								alert("서버에 오류가 발생하였습니다.");
+							}
+				        	
+				        }
+					})
+				} else {
+					if ($('#a_content').val().trim() == "") {
+						alert("답변을 작성 후 등록버튼을 눌러주세요.");
 					} else{
-						alert("서버에 오류가 발생하였습니다.");
+						alert("답변을 수정 후 등록버튼을 눌러주세요.")
 					}
-		        	
-		        }
-			})
+					
+				}
 			}
 		});
 		
@@ -119,9 +136,16 @@
 		<!-- /qna 상세페이지 세션 -->
 		<!-- qna 상세 부분 버튼들 -->
 		<div id="qna_view_btns">
+		<c:if test="${vo.status == 0}">
 			<button id="cancel_btn">취소</button>
 			<button id="registration_btn">등록</button>
 			<button id="delete_btn">삭제</button>
+		</c:if>
+		<c:if test="${vo.status == 1}">
+			<button id="cancel_btn">취소</button>
+			<button id="registration_btn">답변수정</button>
+			<button id="delete_btn">삭제</button>
+		</c:if>
 		</div>
 		<!-- /qna 상세 부분 버튼들 -->
 	</div>

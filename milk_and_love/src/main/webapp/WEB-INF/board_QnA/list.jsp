@@ -13,9 +13,13 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 	
-		function showPage(page) {
+		function showPage(page,totalPages) {
 			
 			var row;
+			
+			var pageNo = parseInt(page)*50-50+1;
+			
+			var contentNo = 0;
 			
 			$.ajax({
 		        url: '/QnA_list',
@@ -33,6 +37,7 @@
 		        	if(data.length > 0){
 		        		$.each(data, function(index, item) {
 		        			if (item.is_deleted == 1) {
+		        				
 								return;
 							}
 		        			
@@ -40,7 +45,7 @@
 			        	    row = $("<tr>");
 	
 			        	    // '번호' 필드
-			        	    row.append($("<td>").attr("class", "no_td").text(item.no));
+			        	    row.append($("<td>").attr("class", "no_td").text(pageNo + contentNo));
 			        	    
 							// '제목' 필드
 							var titleCell = $("<td>").attr("class", "title_td");
@@ -62,11 +67,24 @@
 			        	    } else {
 			        	        statusCell.text('완료');
 			        	    }
-			        	    
 			        	    row.append(statusCell);
 			        	    
+			        	    // '답변자' 필드
+			        	    var answererCell = $("<td>").attr("class","answerer_td");
+			        	    
+			        	   	if (item.a_author != null) {
+			        	    	answererCell.text(item.a_author)
+							} else {
+								answererCell.text(' ')
+							}
+			        	    
+			        	    
+			        	    row.append(answererCell);
+			        	    
 			        	 	// 모든 데이터를 테이블에 추가
-			        	    $("#qna_tbl tbody").append(row);  
+			        	    $("#qna_tbl tbody").append(row);
+			        	 	
+			        	    contentNo++;
 		        		});
 			        	 	
 			        	
@@ -86,7 +104,7 @@
 		// 검색기능 펑션
 		function srech(keyWords,page) {
 			
-			var pageNo = parseInt(page);
+			var pageNo = parseInt(page)*50-50+1;
 			
 			keyWords['page'] = pageNo;
 			
@@ -113,7 +131,7 @@
 			        	    row = $("<tr>");
 	
 			        	    // '번호' 필드
-			        	    row.append($("<td>").attr("class", "no_td").text(item.no));
+			        	    row.append($("<td>").attr("class", "no_td").text(pageNo + index));
 	
 			        	    
 			        	 	// '제목' 필드
@@ -138,6 +156,16 @@
 			        	    }
 			        	    
 			        	    row.append(statusCell);
+			        	    
+			        	    
+			        	 	// '답변자' 필드
+			        	    var answererCell = $("<td>").attr("class","answerer_td");
+			        	    if (item.a_author != null) {
+			        	    	answererCell.text(${item.a_author})
+							} else {
+								answererCell.text(' ')
+							}
+			        	    
 			        	    
 			        	 	// 모든 데이터를 테이블에 추가
 			        	    $("#qna_tbl tbody").append(row);  
@@ -167,7 +195,7 @@
 		    var searchParams = {};
 			
 			// 페이지를 동적으로 추가
-			showPage(page);
+			showPage(page,totalPages);
 			
 			// 조회 버튼 펑션
 		    $('#search_btn').click(function(){
@@ -211,10 +239,10 @@
 			        success: function(data) {
 			        	totalPages = data;
 			        	if(totalPages == 0){
-			        		$('#totalPages').text(1);
-			        	} else{
-			        		$('#totalPages').text(totalPages);
-			        	}
+		        			totalPages = 1;
+			        	};
+			        	
+			        	$('#totalPages').text(totalPages);
 			        	$('#page_input').val(page);
 			        }
 		        })
@@ -337,6 +365,7 @@
 						<th class="qna_th">작성일</th>
 						<th class="qna_th">작성자</th>
 						<th class="qna_th">답변 여부</th>
+						<th class="qna_th">답변자</th>
 					</tr>
 					
 				</tbody>

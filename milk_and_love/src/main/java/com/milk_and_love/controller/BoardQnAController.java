@@ -40,7 +40,7 @@ public class BoardQnAController {
 			// 나머지 페이지 설정
 			int count = service.totalPage();
 			
-			int totalPages = count/size;
+			int totalPages = count/size+1;
 			
 			model.addObject("totalPages", totalPages);
 			
@@ -53,9 +53,16 @@ public class BoardQnAController {
 		@GetMapping("/QnA/view")
 		public ModelAndView boradQnAView(ModelAndView model, @RequestParam("no") String no) {
 			BoardQnAVO boardQnAVO = service.selectOne(no);
-			model.addObject("vo", boardQnAVO);
 			
-			model.setViewName("/board_QnA/view.jsp");
+			if (boardQnAVO != null) {
+				model.addObject("vo", boardQnAVO);
+				
+				model.setViewName("/board_QnA/view.jsp");
+				
+			} else {
+				model.setViewName("/board_QnA/list.jsp");
+			}
+			
 			return model;
 		}
 		
