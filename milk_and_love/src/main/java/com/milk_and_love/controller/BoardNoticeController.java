@@ -15,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.milk_and_love.service.BoardNoticeService;
 import com.milk_and_love.vo.BoardNoticeVO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class BoardNoticeController {
 	@Value("${row.count.per.page}")
