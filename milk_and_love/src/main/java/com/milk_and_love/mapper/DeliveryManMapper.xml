@@ -5,7 +5,7 @@
 	<select id="selectAll">
 			SELECT *
 			FROM (
-			        SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id) as rn
+			        SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id desc) as rn
     				FROM delivery_man
 		         )
 			WHERE rn BETWEEN #{start} and #{end}
@@ -61,7 +61,7 @@
 	<select id="search">
 		SELECT *
 		FROM (
-			SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id) as rn
+			SELECT delivery_man.*, ROW_NUMBER() OVER (ORDER BY id desc) as rn
 			FROM delivery_man
 			<where>
 				1=1

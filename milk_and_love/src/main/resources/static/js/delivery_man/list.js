@@ -149,6 +149,8 @@ $(document).ready(function() {
 		}
 	});
     
+
+    
     // 승인,해지 버튼 펑션
     $(document).on('click', '#approve_btn, #refuse_btn', function() {
         var status = $(this).val();
@@ -168,9 +170,9 @@ $(document).ready(function() {
 	                    alert("변경이 완료되었습니다.");
 	                    
 	                    if(Object.keys(searchParams).length == 0){
-	                    	showPage(page,tableId);;
+	                    	tableBuilder.showPage(page,tableId);;
 	                    } else{
-	                    	srech(searchParams,page,tableId)	
+	                    	tableBuilder.srech(searchParams,page,tableId)	
 	                    }
 	                    
 	                } else {

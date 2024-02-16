@@ -90,7 +90,7 @@
 				data: "area=" + area + "&area3=" + area3,
 				dataType: 'json',
 				success: function(data) {
-					//console.log(data);
+					console.log(data);
 					
 					let content = "<option value='none'>----- 배달 담당자 선택 -----</option>";
 					$.each(data, function(index, item) {

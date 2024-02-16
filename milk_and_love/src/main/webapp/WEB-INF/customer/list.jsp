@@ -36,7 +36,7 @@
 								<th>이름</th>
 								<td><input type="text" name="name" maxlength="5"></td>
 								<th>연락처</th>
-								<td><input type="number" name="tel" maxlength="11"></td>
+								<td><input type="number" name="tel" maxlength="11" oninput="numberMaxLength(this);"></td>
 							</tr>
 							 
 							<tr>
@@ -51,9 +51,12 @@
 								</td>
 								<th>상태</th>
 								<td>
-									<input type="radio" name="c_status" value=-1 checked>전체
-									<input type="radio" name="c_status" value=0>정상
-									<input type="radio" name="c_status" value=1>해지
+									<input type="radio" name="c_status" id="c_status_all" value=-1 checked>
+									<label for="c_status_all">전체</label>
+									<input type="radio" name="c_status" id="c_status_common" value=0>
+									<label for="c_status_common">정상</label>
+									<input type="radio" name="c_status" id="c_status_terminate" value=1>
+									<label for="c_status_terminate">해지</label>
 								</td>
 							</tr>
 							
@@ -162,6 +165,7 @@
 		<%@include file="/WEB-INF/footer.jsp" %>
 	</div>
 	
+	<script src="/js/input_len_constraints.js"></script>
 	<script>
 	$(document).ready(function() {
 		let isFormChanged = false;		// 검색 조건 변경 여부

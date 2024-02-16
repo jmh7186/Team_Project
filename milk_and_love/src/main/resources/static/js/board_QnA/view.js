@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	var a_content = $('#a_content').val();
 	
 	// 취소 버튼 스크립트

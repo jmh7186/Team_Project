@@ -216,12 +216,14 @@ public class DeliveryManController {
 			} else {
 				pageNo = (int) keyWords.get("page");
 			} 
+			System.out.println(pageNo);
 			
 			int start = (pageNo - 1) * size + 1;
 			int end = pageNo * size;
 			
 			//System.out.println(start);
 			//System.out.println(end);
+			
 			keyWords.remove("page");
 			keyWords.put("start", start);
 			keyWords.put("end", end);
@@ -240,6 +242,7 @@ public class DeliveryManController {
 		public int deliveryManMaxpage(@RequestBody(required=false) Map<String, Object>  keyWords) {
 			//System.out.println(keyWords);
 			int size = Integer.parseInt(rowCountPerPage);
+			
 			
 			int total =  service.searchTotalPage(keyWords)/size;
 		    

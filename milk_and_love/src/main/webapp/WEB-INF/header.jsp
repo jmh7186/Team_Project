@@ -42,9 +42,15 @@
 					<li><a href="/customer/join">신규 고객 등록</a></li>
 				</ul>
 			</li>
-			<li><a href="/QnA">1:1 문의</a></li>
 			<li>
-				공지사항
+				1:1 문의 관리
+				<ul>
+					<li><a href="/QnA">1:1 문의</a></li>
+				</ul>
+			
+			</li>
+			<li>
+				공지사항 관리
 				<ul>
 					<li><a href="/notice/list">공지사항 목록</a></li>
 					<li><a href="/notice/post">공지사항 작성</a></li>

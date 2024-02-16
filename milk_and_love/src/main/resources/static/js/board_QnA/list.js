@@ -24,6 +24,8 @@ $(document).ready(function() {
 	// 페이지를 동적으로 추가
 	tableBuilder.showPage(page);
 	
+	//console.log(page);
+	
 	// 조회 버튼 펑션
     $('#search_btn').click(function(){
     	// 객체 초기화
@@ -52,7 +54,7 @@ $(document).ready(function() {
             }
         });
         //console.log(searchParams);
-        
+        //console.log(page);
         page = 1;
         
         tableBuilder.srech(searchParams,page);
@@ -81,22 +83,23 @@ $(document).ready(function() {
 	
     // 첫번째 페이지 평선
     $('#first_page_btn').click(function() {
-    	page = tableBuilder.firstPage(searchParams,page);
+    	page = tableBuilder.firstPage(page,searchParams);
     });
     
     // 이전 페이지 펑션
     $('#previous_page_btn').click(function() {
-    	page = tableBuilder.previousPage(searchParams,page);
+    	page = tableBuilder.previousPage(page,searchParams);
     });
     
     // 다음 페이지 펑션
     $('#next_page_btn').click(function() {
-    	page = tableBuilder.nextPage(searchParams,page);
+		console.log(searchParams);
+    	page = tableBuilder.nextPage(page,totalPages,searchParams);
     });
     
     // 마지막 페이지 펑션
     $('#last_page_btn').click(function() {
-    	page = tableBuilder.lastPage(searchParams,page);
+    	page = tableBuilder.lastPage(page,totalPages,searchParams);
     });
 	
 });

@@ -6,7 +6,7 @@
 	<select id="selectAll">
 		SELECT *
 		FROM (
-		        SELECT no,title,q_content,q_author,q_date,status,a_author,is_deleted, ROWNUM as rnum
+		        SELECT no,title,q_content,q_author,q_date,status,a_author, a_date, is_deleted, ROWNUM as rnum
 		        FROM (
 		                SELECT *
 		                FROM "BOARD_QNA"

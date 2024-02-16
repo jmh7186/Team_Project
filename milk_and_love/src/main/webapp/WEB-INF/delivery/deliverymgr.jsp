@@ -109,12 +109,14 @@
 	}
 	
  	typepage = document.getElementById('typepage');
- 	typepage.addEventListener("keyup",(event)=> {
-		if(event.keyCode==13) {
-			movetopage(typepage.value);
-		}
-	});
- 	
+ 	if(typepage) {
+ 		typepage.addEventListener("keyup",(event)=> {
+ 			if(event.keyCode==13) {
+ 				movetopage(typepage.value);
+ 			}
+ 		});
+	}
+
  	if(${not empty searchdetail.customer_status}) {
  		customer_status = document.getElementById('customer_status');
  		for(i=0; i<customer_status.options.length; i++) {

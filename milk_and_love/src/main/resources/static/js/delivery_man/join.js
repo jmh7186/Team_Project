@@ -10,6 +10,8 @@ $(document).ready(function() {
  	//한글 이름 정규식
     var nameReg = /^[가-힣]{2,5}$/;
 	
+	//var is
+	
 	// 지역 선택 인풋 박스 생성 클래스 파일
     let areaSelect = new AreaSelect();
     
@@ -38,26 +40,29 @@ $(document).ready(function() {
 	
 	// 확인 버튼이 눌렸을때 실행
 	$("#confirm_btn").click(function(e) {
+		let isCheck = 0;
 		
 		var joinDates={};
 		
 		//from태그 밑의 모든 input과 select의 값을 가져와 검사함
 		$("form input, form select").each(function() {
-			if (this.id == 'detail_address' || this.id == 'area3') {
-				if ($(this).val()) {
-					joinDates[this.id] = $(this).val();
-				}
-			} else {
+			joinDates[this.id] = $(this).val();
+			
+			if(this.id != 'detail_address' && this.id != 'area3') {
 				if (!$(this).val()) {
 					alert("필수 입력항목이 비어있습니다.");
 					$(this).focus();
+					isCheck= 1;
 					return false;
-				} else {
-					joinDates[this.id] = $(this).val();
+
 				}
 			}
 			
 	    });
+		
+		if(isCheck == 1){
+			return;
+		}
 		
 		// 전화번호 입력란 대한 검증
 		if (!phoneReg.test($('#tel').val())) {

@@ -57,7 +57,7 @@ class TableBuilder{
 	        	    // 데이터 행 추가
 	        	    row = $("<tr>");
 	        	    row.append($("<td>").attr("id", "no_date_td").attr("rowspan", 10).attr("colspan", 9).text('조회된 데이터가 없습니다.'));
-	        	    $(this.tblId).append(this.row);
+	        	    $(this.tblId).append(row);
 	        	}
 		
 			}
@@ -67,13 +67,14 @@ class TableBuilder{
 	// 검색기능 메소드
 	srech(keyWords,page) {
 		
-		var pageNo = parseInt(page)*50-50+1;
-		
-		keyWords['page'] = pageNo;
+		var pageNo = parseInt(page);
 		
 		var url;
 		
 		var row;
+		
+		
+		keyWords['page'] = pageNo;
 		
 		switch(this.pageName){
 			case 'delivery_man':
@@ -157,6 +158,7 @@ class TableBuilder{
 	
 	// 다음 페이지 메소드
 	nextPage(page,totalPages,searchParams) {
+		console.log(searchParams);
 		
 		if (parseInt(page) != parseInt(totalPages)) {
 			page = parseInt(page)+1;

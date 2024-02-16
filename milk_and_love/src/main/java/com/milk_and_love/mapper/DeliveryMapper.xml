@@ -18,7 +18,7 @@
 				delivery_man_id,
 				status d_status,
 				customer_status
-				from delivery
+		from delivery
 	</select>
 	<select id="selectByNo">
 		select	c.name

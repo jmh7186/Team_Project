@@ -25,7 +25,7 @@
 			<!-- 정보 -->
 			<div class="info_wrap">
 				<form id="frm_edit" action="/notice/edit_process" method="post" onsubmit="return false;">
-					<input type="hidden" value="${vo.no}">
+					<input type="hidden" name="no" value="${vo.no}">
 					<table>
 						<tbody>
 							<tr>

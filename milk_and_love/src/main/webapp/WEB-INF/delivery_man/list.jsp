@@ -110,6 +110,7 @@
 			<button type="button" id="select_approve_btn" value="1">선택 승인</button>
 			<button type="button" id="select_refuse_btn" value="2">선택 거절</button>
 		</div>
+		
 		<!-- / 선택 버튼 div -->
 		<!-- 페이징 세션 -->
 		<section id="page_section">

@@ -60,6 +60,7 @@
 						<th class="qna_th">작성자</th>
 						<th class="qna_th">답변 여부</th>
 						<th class="qna_th">답변자</th>
+						<th class="qna_th">답변 일자</th>
 					</tr>
 					
 				</tbody>

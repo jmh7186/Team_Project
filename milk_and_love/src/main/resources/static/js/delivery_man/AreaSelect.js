@@ -59,7 +59,7 @@ class AreaSelect {
 			success: function(data) {
 				//console.log(data);
 				
-				let content = "<option value='none'>----- 읍면동 선택 -----</option>";
+				let content = "<option value=''>----- 읍면동 선택 -----</option>";
 				$.each(data, function(index, item) {
 					content += '<option data-code='+item.CODE+' value='+item.AREA+'>'+item.AREA+'</option>';
 				});

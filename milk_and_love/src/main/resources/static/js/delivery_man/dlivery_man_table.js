@@ -26,7 +26,7 @@ class DeliveryManTable extends TableBuilder{
 	    row.append(checkboxCell);
 	
 	    // '번호' 필드
-	    row.append($("<td>").attr("class", "no_td").text(pageNo + index));
+	    row.append($("<td>").attr("class", "no_td").text((pageNo - 1) * 50 + 1 + index));
 	
 	    // 'ID' 필드
 	    var idCell = $("<td>").attr("class", "id_td");

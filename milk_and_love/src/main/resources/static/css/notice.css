@@ -1,4 +1,7 @@
 @charset "UTF-8";
+span.pin {
+	cursor: pointer;
+}
 
 span.pin:not(.pinned) {
 	color: transparent; /* 기존 이모지 컬러 제거 */

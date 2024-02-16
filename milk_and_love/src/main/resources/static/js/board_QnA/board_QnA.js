@@ -62,6 +62,17 @@ class BoardQnATable extends TableBuilder{
 	    
 	    row.append(answererCell); 
 	    
+	    // '답변 일자' 필드
+	    var answerDateCell = $("<td>").attr("class","answer_date_td");
+		if (item.a_date != null) {
+	    	answerDateCell.text(item.a_date)
+		} else {
+			answerDateCell.text(' ')
+		}
+		
+	    row.append(answerDateCell); 
+	    
+	    
 	    return row;
 	    
 	};

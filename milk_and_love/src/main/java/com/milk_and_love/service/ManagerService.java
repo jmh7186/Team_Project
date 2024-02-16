@@ -31,6 +31,7 @@ public class ManagerService implements ManagerMapper{
 
 	@Override
 	public int update(ManagerVO vo) {
+		System.out.println(vo.toString());
 		return mapper.update(vo);
 	}
 
