@@ -27,7 +27,7 @@ $(document).ready(function() {
     var pageName = 'delivery_man';
     
     // 테이블 생성 클래스
-    let tableBuilder = new DeliveryManTable(pageName,tableName);
+    let tableBuilder = new DeliveryManTable(pageName,tableId);
     
     // 지역 선택 인풋 박스 생성 클래스
     let areaSelect = new AreaSelect();
@@ -168,9 +168,9 @@ $(document).ready(function() {
 	                    alert("변경이 완료되었습니다.");
 	                    
 	                    if(Object.keys(searchParams).length == 0){
-	                    	showPage(page,tableName);;
+	                    	showPage(page,tableId);;
 	                    } else{
-	                    	srech(searchParams,page,tableName)	
+	                    	srech(searchParams,page,tableId)	
 	                    }
 	                    
 	                } else {
@@ -213,9 +213,9 @@ $(document).ready(function() {
 		                if (data === 1) {
 		                    alert("변경이 완료되었습니다.");
 		                    if(Object.keys(searchParams).length == 0){
-		                    	tableBuilder.showPage(page,tableName);;
+		                    	tableBuilder.showPage(page,tableId);;
 		                    } else{
-		                    	tableBuilder.srech(searchParams,page,tableName)	
+		                    	tableBuilder.srech(searchParams,page,tableId)	
 		                    }
 
 		                } else {

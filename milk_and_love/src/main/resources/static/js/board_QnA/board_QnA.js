@@ -1,4 +1,4 @@
-import TableBuilder from "../tableBuilder";
+import TableBuilder from "../tableBuilder.js";
 
 /*
 	1대1 문의 페이지의 문의 내역 테이블을 비동기 방식으로 생성하는 클래스

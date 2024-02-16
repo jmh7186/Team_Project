@@ -1,4 +1,4 @@
-import BoardQnATable from "./board_QnA";
+import BoardQnATable from "./board_QnA.js";
 
 
 $(document).ready(function() {
@@ -12,9 +12,6 @@ $(document).ready(function() {
 	// 검색 데이터 저장 변수
     var searchParams = {};
 	
-	// 페이지를 동적으로 추가
-	showPage(page,totalPages);
-	
 	// 내용을 추가할 테이블 id 변수
     var tableId = '#qna_tbl';
     
@@ -24,6 +21,7 @@ $(document).ready(function() {
 	// 테이블 생성 클래스
 	let tableBuilder = new BoardQnATable(pageName,tableId);
 	
+	// 페이지를 동적으로 추가
 	tableBuilder.showPage(page);
 	
 	// 조회 버튼 펑션
